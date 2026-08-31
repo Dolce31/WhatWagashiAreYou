@@ -5,39 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>What Wagashi Are You?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Itim&family=Potta+One&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&family=Potta+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ปุ่มเลือกภาษา TH / JP มุมบนซ้าย -->
   <div class="lang-switch">
     <button id="lang-btn-th" class="lang-btn active" onclick="changeLanguage('th')">TH</button>
     <button id="lang-btn-ja" class="lang-btn" onclick="changeLanguage('ja')">JP</button>
   </div>
 
-  <!-- ปุ่มเปิด/ปิดเสียงเพลง มุมบนขวา -->
   <button id="music-toggle-btn" class="music-btn" title="เปิด/ปิดเสียง">♫</button>
 
-  <!-- แท็กเสียง BGM -->
+  <button id="floating-back-btn" class="floating-back-btn hidden" onclick="goBackStep()" title="ย้อนกลับ">‹</button>
+
   <audio id="bgm" loop preload="auto">
     <source src="https://files.catbox.moe/lc93mi.mp3" type="audio/mp3">
   </audio>
 
   <div class="quiz-card">
     
-    <!-- 1. หน้าแรก (Start Screen) -->
     <div id="start-screen">
       <img src="https://i.postimg.cc/xd9HZk42/ae077464-527b-46e1-b550-56e94ad88fb1.jpg" alt="Cover" class="scene-img">
       <h1 id="start-title">เลือกคำตอบที่ตรงกับใจเพื่อค้นหาตัวตนของคุณ</h1>
       <button id="start-btn" class="main-btn" onclick="startGame()">เริ่มเลย ➜</button>
     </div>
 
-    <!-- 2. หน้าดำเนินเรื่อง (Story Screen) -->
     <div id="story-screen" class="hidden">
-      
-      <!-- แท่งบอกความคืบหน้า (Progress Bar) -->
       <div class="progress-container">
         <div id="progress-bar" class="progress-bar"></div>
       </div>
@@ -47,7 +42,6 @@
       <div id="choice-buttons" class="choices-box"></div>
     </div>
 
-    <!-- 3. หน้าสรุปผลลัพธ์ (Result Screen) -->
     <div id="result-screen" class="hidden">
       <img id="result-img" class="scene-img" alt="Result Image">
       <h2 id="result-title"></h2>
