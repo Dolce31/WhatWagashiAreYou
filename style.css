@@ -1,0 +1,146 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /* ใช้ฟอนต์ Itim สำหรับไทย และ M PLUS Rounded 1c สำหรับญี่ปุ่น */
+  font-family: 'Itim', 'M PLUS Rounded 1c', cursive, sans-serif;
+  background-color: #F3F0E5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+/* ปุ่มควบคุมเพลงมุมบนขวา */
+.music-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #d4c5b9;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  z-index: 999;
+  transition: transform 0.1s ease;
+}
+
+.music-btn:active {
+  transform: scale(0.9);
+}
+
+.quiz-card {
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  text-align: center;
+  max-width: 450px;
+  width: 100%;
+}
+
+/* รูปภาพประจำฉาก */
+.scene-img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border-radius: 12px;
+  margin: 0 auto 16px auto;
+  display: block;
+}
+
+/* ข้อความหน้าแรก */
+h1 {
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.6;
+  margin: 16px auto 24px auto;
+  max-width: 320px;
+  color: #4D3F22;
+}
+
+/* ข้อความบรรยายเนื้อเรื่อง */
+.story-text {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #4D3F22;
+  margin: 18px 0 24px 0;
+  white-space: pre-line; /* เว้นวรรคและขึ้นบรรทัดใหม่ตามที่พิมพ์ใน JS */
+}
+
+/* กล่องรวมปุ่มช้อยส์ */
+.choices-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* ปุ่มหลักและปุ่มตัวเลือก */
+.main-btn, .choices-box button {
+  font-family: inherit;
+  font-size: 16px;
+  background-color: #4D3F22;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.main-btn:hover, .choices-box button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.main-btn:active, .choices-box button:active {
+  transform: translateY(0);
+}
+
+/* หัวข้อและคำอธิบายหน้าผลลัพธ์ */
+#result-title {
+  font-size: 22px;
+  color: #4D3F22;
+  margin: 16px 0 8px 0;
+}
+
+.result-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4D3F22;
+  margin-bottom: 24px;
+  white-space: pre-line;
+}
+
+/* สำหรับซ่อนหน้าที่ไม่ได้ใช้งาน */
+.hidden {
+  display: none !important;
+}
+
+/* แอนิเมชันเฟดนุ่มๆ สไตล์ Visual Novel */
+.fade-in {
+  animation: smoothFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes smoothFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
