@@ -161,6 +161,13 @@ function showScene() {
   const storyScreen = document.getElementById("story-screen");
   const imgEl = document.getElementById("scene-img");
 
+  // อัปเดตแถบความคืบหน้า (Progress Bar)
+  const progressPercent = ((currentSceneIndex + 1) / storyScenes.length) * 100;
+  const progressBar = document.getElementById("progress-bar");
+  if (progressBar) {
+    progressBar.style.width = `${progressPercent}%`;
+  }
+
   storyScreen.classList.remove("fade-in");
   void storyScreen.offsetWidth; 
   storyScreen.classList.add("fade-in");
