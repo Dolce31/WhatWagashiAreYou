@@ -173,3 +173,28 @@ h1 {
     transform: translateY(0);
   }
 }
+
+/* ย่อขนาดตัวหนังสือลงเฉพาะตอนเปิดภาษาญี่ปุ่น */
+body.lang-ja h1 {
+  font-size: 14px;
+}
+
+body.lang-ja .story-text {
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+
+body.lang-ja .main-btn, 
+body.lang-ja .choices-box button {
+  font-size: 14.5px;
+  padding: 10px 20px;
+}
+
+body.lang-ja #result-title {
+  font-size: 19px;
+}
+
+body.lang-ja .result-desc {
+  font-size: 13.5px;
+  line-height: 1.8;
+}
