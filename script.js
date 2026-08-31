@@ -14,13 +14,10 @@ const uiText = {
   }
 };
 
-// 1. แต้มสะสม
-let scores = {
-  typeA: 0,
-  typeB: 0
-};
-
+// 1. ตัวแปรเก็บสถานะและประวัติคะแนน
+let scores = { typeA: 0, typeB: 0 };
 let currentSceneIndex = 0;
+let choiceHistory = []; // เก็บประวัติว่าแต่ละข้อเลือกอะไรไป เพื่อใช้ลบคะแนนเวลาย้อนกลับ
 
 // 2. ข้อมูลฉากเนื้อเรื่อง (2 ภาษา)
 const storyScenes = [
@@ -61,12 +58,12 @@ const storyScenes = [
 // 3. ผลลัพธ์ตอนจบ (2 ภาษา)
 const results = {
   typeA: {
-    title: { th: "A", ja: "A " },
-    desc: { th: "รักความสงบ อบอุ่น สบายใจเมื่อได้อยู่คนเดียว", ja: "優しくて温かい、穏やかな心の持ち主。" },
+    title: { th: "ไดฟุกุ (Daifuku)", ja: "大福（だいふく）" },
+    desc: { th: "รักความสงบ นุ่มนวล อบอุ่น สบายใจเมื่อได้อยู่คนเดียว", ja: "優しくて温かい、穏やかな心の持ち主。" },
     image: "https://placehold.co/400x250/png?text=Daifuku"
   },
   typeB: {
-    title: { th: "B", ja: "B " },
+    title: { th: "ดังโงะ (Dango)", ja: "団子（だんご）" },
     desc: { th: "ร่าเริงสดใส เข้ากับทุกคนได้ง่าย เต็มไปด้วยพลังบวก", ja: "明るく元気で、誰とでもすぐに仲良くなれる人気者。" },
     image: "https://placehold.co/400x250/png?text=Dango"
   }
@@ -76,27 +73,22 @@ const results = {
 function changeLanguage(lang) {
   currentLang = lang;
   
-  // เพิ่ม/ลบคลาส lang-ja ที่ body เพื่อปรับขนาดฟอนต์
   if (lang === 'ja') {
     document.body.classList.add('lang-ja');
   } else {
     document.body.classList.remove('lang-ja');
   }
 
-  // สลับสถานะปุ่ม Active
   document.getElementById("lang-btn-th").classList.toggle("active", lang === 'th');
   document.getElementById("lang-btn-ja").classList.toggle("active", lang === 'ja');
   
-  // เปลี่ยนข้อความหน้าแรก, ปุ่มเริ่มเกม และปุ่มรีสตาร์ท
   document.getElementById("start-title").innerText = uiText[lang].startTitle;
   document.getElementById("start-btn").innerText = uiText[lang].startBtn;
   document.getElementById("restart-btn").innerText = uiText[lang].restartBtn;
 
-  // อัปเดตภาษาทันทีถ้ากำลังอยู่ในหน้าเล่นเกม
   if (!document.getElementById("story-screen").classList.contains("hidden")) {
     showScene();
   }
-  // อัปเดตภาษาทันทีถ้าอยู่ในหน้าสรุปผล
   if (!document.getElementById("result-screen").classList.contains("hidden")) {
     showFinalResult();
   }
@@ -149,6 +141,9 @@ document.addEventListener("click", startAudioOnFirstInteraction, { once: true })
 
 // 6. เริ่มเกม
 function startGame() {
+  // บันทึก History State ลงเบราว์เซอร์
+  history.pushState({ scene: 0 }, "");
+  
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("story-screen").classList.remove("hidden");
   showScene();
@@ -161,7 +156,7 @@ function showScene() {
   const storyScreen = document.getElementById("story-screen");
   const imgEl = document.getElementById("scene-img");
 
-  // อัปเดตแถบความคืบหน้า (Progress Bar)
+  // อัปเดตหลอด Progress Bar
   const progressPercent = ((currentSceneIndex + 1) / storyScenes.length) * 100;
   const progressBar = document.getElementById("progress-bar");
   if (progressBar) {
@@ -195,6 +190,7 @@ function showScene() {
 
 // 8. เมื่อเลือกคำตอบ
 function selectChoice(type) {
+  choiceHistory.push(type);
   if (type) {
     scores[type] = (scores[type] || 0) + 1;
   }
@@ -202,8 +198,10 @@ function selectChoice(type) {
   currentSceneIndex++;
 
   if (currentSceneIndex < storyScenes.length) {
+    history.pushState({ scene: currentSceneIndex }, "");
     showScene();
   } else {
+    history.pushState({ result: true }, "");
     showFinalResult();
   }
 }
@@ -230,7 +228,13 @@ function showFinalResult() {
 function restartGame() {
   scores = { typeA: 0, typeB: 0 };
   currentSceneIndex = 0;
+  choiceHistory = [];
   
+  const progressBar = document.getElementById("progress-bar");
+  if (progressBar) {
+    progressBar.style.width = "0%";
+  }
+
   document.getElementById("result-screen").classList.add("hidden");
   document.getElementById("story-screen").classList.add("hidden");
   
@@ -240,3 +244,24 @@ function restartGame() {
   void startScreen.offsetWidth;
   startScreen.classList.add("fade-in");
 }
+
+// 11. ดักจับปุ่ม Back บนโทรศัพท์/เบราว์เซอร์
+window.addEventListener("popstate", (event) => {
+  const state = event.state;
+
+  if (state && typeof state.scene === 'number') {
+    // กดย้อนกลับในระหว่างเล่นเกม
+    const lastChoice = choiceHistory.pop();
+    if (lastChoice) {
+      scores[lastChoice] = Math.max(0, (scores[lastChoice] || 0) - 1);
+    }
+    
+    currentSceneIndex = state.scene;
+    document.getElementById("result-screen").classList.add("hidden");
+    document.getElementById("story-screen").classList.remove("hidden");
+    showScene();
+  } else {
+    // กดย้อนกลับจนถึงหน้าแรก
+    restartGame();
+  }
+});
