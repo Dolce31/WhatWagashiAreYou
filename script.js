@@ -25,9 +25,10 @@ const storyScenes = [
       { text: "เดินไปทางทุ่งดอกไม้", type: "typeB" }
     ]
   },
+  // ฉากที่ 3: มีตัวเลือกสะสมคะแนน
   {
     image: "https://placehold.co/400x250/png?text=Scene+1",
-    text: "เมื่อเดินตามทางมาคุณได้พบกลับสถานที่แห่งนึง คุณคิดว่าสถานที่นั้นคือ",
+    text: "เมื่อเดินตามทางมาคุณได้พบกับสถานที่แห่งนึง คุณคิดว่าสถานที่นั้นคือ",
     choices: [
       { text: "กระท่อมอบอุ่น", type: "typeA" },
       { text: "ทะเลกว้างใหญ่", type: "typeB" }
@@ -49,7 +50,7 @@ const results = {
   }
 };
 
-// 4. ระบบจัดการเสียง BGM (แก้เป็น const เรียบร้อย)
+// 4. ระบบจัดการเสียง BGM
 const bgm = document.getElementById("bgm");
 const musicBtn = document.getElementById("music-toggle-btn");
 
@@ -62,13 +63,11 @@ function toggleMusic() {
   if (!bgm || !musicBtn) return;
 
   if (!bgm.paused) {
-    // กำลังเล่นอยู่ -> สั่งปิด
     bgm.pause();
     musicBtn.classList.add("muted");
     musicBtn.classList.remove("playing");
     musicBtn.innerText = "✕";
   } else {
-    // ปิดอยู่ -> สั่งเปิด
     bgm.volume = 0.15;
     bgm.play().then(() => {
       musicBtn.classList.remove("muted");
@@ -82,7 +81,7 @@ if (musicBtn) {
   musicBtn.addEventListener("click", toggleMusic);
 }
 
-// ดักจับการแตะหน้าจอครั้งแรก (ไม่ว่าแตะที่ไหนก็ตาม ให้เพลงเริ่มเล่นและขึ้น ♫ ทันที)
+// ดักจับการแตะหน้าจอครั้งแรก
 function startAudioOnFirstInteraction() {
   if (bgm && bgm.paused) {
     bgm.volume = 0.15;
@@ -96,7 +95,6 @@ function startAudioOnFirstInteraction() {
   }
 }
 
-// ฟังเสียงการแตะจอครั้งแรก
 document.addEventListener("click", startAudioOnFirstInteraction, { once: true });
 
 // ปุ่ม START
@@ -105,16 +103,20 @@ document.getElementById("start-btn").addEventListener("click", () => {
   document.getElementById("story-screen").classList.remove("hidden");
   showScene();
   
-  // ให้แน่ใจว่าเพลงเล่นแน่นอน
   startAudioOnFirstInteraction();
 });
 
-// 6. แสดงฉากปัจจุบัน
+// 6. แสดงฉากปัจจุบัน (เพิ่มคำสั่งแอนิเมชัน Fade-in)
 function showScene() {
   const current = storyScenes[currentSceneIndex];
+  const storyScreen = document.getElementById("story-screen");
   const imgEl = document.getElementById("scene-img");
 
-  // ตรวจสอบรูปภาพ ถ้าไม่มีรูปให้สั่งซ่อนทันที
+  // รีเซ็ตแอนิเมชันให้เล่นใหม่ทุกครั้งที่กดเปลี่ยนฉาก
+  storyScreen.classList.remove("fade-in");
+  void storyScreen.offsetWidth; 
+  storyScreen.classList.add("fade-in");
+
   if (current.image && current.image !== "") {
     imgEl.src = current.image;
     imgEl.style.display = "block";
@@ -151,24 +153,22 @@ function selectChoice(type) {
   }
 }
 
-// 8. ประมวลผลและแสดงผลลัพธ์
+// 8. ประมวลผลและแสดงผลลัพธ์ (เพิ่มแอนิเมชัน Fade-in)
 function showFinalResult() {
   const finalType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
   const resultData = results[finalType] || results["typeA"];
 
+  const resultScreen = document.getElementById("result-screen");
   document.getElementById("story-screen").classList.add("hidden");
-  document.getElementById("result-screen").classList.remove("hidden");
+  
+  resultScreen.classList.remove("hidden");
+  resultScreen.classList.remove("fade-in");
+  void resultScreen.offsetWidth;
+  resultScreen.classList.add("fade-in");
 
   document.getElementById("result-title").innerText = resultData.title;
   document.getElementById("result-desc").innerText = resultData.desc;
   document.getElementById("result-img").src = resultData.image;
 }
 
-// 9. รีสตาร์ทเกม
-function restartGame() {
-  scores = { typeA: 0, typeB: 0 };
-  currentSceneIndex = 0;
-  
-  document.getElementById("result-screen").classList.add("hidden");
-  document.getElementById("start-screen").classList.remove("hidden");
-}
+// 9. รี
