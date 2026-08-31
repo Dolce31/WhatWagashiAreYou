@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story Quiz Game</title>
+  <!-- ดึง Google Fonts ภาษาไทย (Itim) และภาษาญี่ปุ่นน่ารักๆ (M PLUS Rounded 1c) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ปุ่มเปิด/ปิดเสียงเพลงที่มุมบนขวา -->
+<button id="music-toggle-btn" class="music-btn" title="เปิด/ปิดเสียง">♫</button>
+
+<!-- แท็กเล่นเพลง BGM (เล่นวนลูปอัตโนมัติ) -->
+<audio id="bgm" loop preload="auto">
+  <source src="https://files.catbox.moe/lc93mi.mp3" type="audio/mp3">
+</audio>
+
+  <div class="quiz-card">
+    
+    <!-- 1. หน้าแรก (Start Screen) -->
+    <div id="start-screen">
+      <!-- รูปปกหน้าแรก -->
+      <img src="https://i.postimg.cc/xd9HZk42/ae077464-527b-46e1-b550-56e94ad88fb1.jpg" alt="Cover" class="scene-img">
+      
+      <h1>เลือกคำตอบที่ตรงกับใจเพื่อออกค้นหาตัวตนของตัวเอง</h1>
+      
+      <button id="start-btn" class="main-btn">START</button>
+    </div>
+
+    <!-- 2. หน้าดำเนินเรื่อง / เล่นเกม (Story Screen) -->
+    <div id="story-screen" class="hidden">
+      <img id="scene-img" class="scene-img" alt="Scene Image">
+      <p id="story-text" class="story-text"></p>
+      <div id="choice-buttons" class="choices-box"></div>
+    </div>
+
+    <!-- 3. หน้าสรุปผลลัพธ์ (Result Screen) -->
+    <div id="result-screen" class="hidden">
+      <img id="result-img" class="scene-img" alt="Result Image">
+      <h2 id="result-title"></h2>
+      <p id="result-desc" class="result-desc"></p>
+      <button id="restart-btn" class="main-btn" onclick="restartGame()">เล่นใหม่อีกครั้ง ↺</button>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
