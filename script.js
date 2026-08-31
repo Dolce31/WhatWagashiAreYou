@@ -171,4 +171,25 @@ function showFinalResult() {
   document.getElementById("result-img").src = resultData.image;
 }
 
-// 9. รี
+// 9. รีสตาร์ทเกม
+function restartGame() {
+  // รีเซ็ตคะแนนและลำดับฉาก
+  scores = { typeA: 0, typeB: 0 };
+  currentSceneIndex = 0;
+  
+  // สลับหน้าจอ
+  document.getElementById("result-screen").classList.add("hidden");
+  document.getElementById("story-screen").classList.add("hidden");
+  
+  const startScreen = document.getElementById("start-screen");
+  startScreen.classList.remove("hidden");
+  startScreen.classList.remove("fade-in");
+  void startScreen.offsetWidth;
+  startScreen.classList.add("fade-in");
+}
+
+// ผูกปุ่ม Restart ป้องกันปัญหา HTML เรียกฟังก์ชันไม่เจอ
+const restartBtn = document.getElementById("restart-btn");
+if (restartBtn) {
+  restartBtn.addEventListener("click", restartGame);
+}
