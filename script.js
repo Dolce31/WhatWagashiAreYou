@@ -76,6 +76,13 @@ const results = {
 function changeLanguage(lang) {
   currentLang = lang;
   
+  // เพิ่ม/ลบคลาส lang-ja ที่ body เพื่อปรับขนาดฟอนต์
+  if (lang === 'ja') {
+    document.body.classList.add('lang-ja');
+  } else {
+    document.body.classList.remove('lang-ja');
+  }
+
   // สลับสถานะปุ่ม Active
   document.getElementById("lang-btn-th").classList.toggle("active", lang === 'th');
   document.getElementById("lang-btn-ja").classList.toggle("active", lang === 'ja');
