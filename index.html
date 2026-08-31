@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>What Wagashi Are You</title>
-  <!-- ดึง Google Fonts ภาษาไทย (Itim) และภาษาญี่ปุ่นน่ารักๆ (M PLUS Rounded 1c) -->
+  <title>What Wagashi Are You?</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Itim&family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
@@ -12,27 +11,30 @@
 </head>
 <body>
 
-  <!-- ปุ่มเปิด/ปิดเสียงเพลงที่มุมบนขวา -->
-<button id="music-toggle-btn" class="music-btn" title="เปิด/ปิดเสียง">♫</button>
+  <!-- ปุ่มเลือกภาษา TH / JP มุมบนซ้าย -->
+  <div class="lang-switch">
+    <button id="lang-btn-th" class="lang-btn active" onclick="changeLanguage('th')">TH</button>
+    <button id="lang-btn-ja" class="lang-btn" onclick="changeLanguage('ja')">JP</button>
+  </div>
 
-<!-- แท็กเล่นเพลง BGM (เล่นวนลูปอัตโนมัติ) -->
-<audio id="bgm" loop preload="auto">
-  <source src="https://files.catbox.moe/lc93mi.mp3" type="audio/mp3">
-</audio>
+  <!-- ปุ่มเปิด/ปิดเสียงเพลง มุมบนขวา -->
+  <button id="music-toggle-btn" class="music-btn" title="เปิด/ปิดเสียง">♫</button>
+
+  <!-- แท็กเสียง BGM -->
+  <audio id="bgm" loop preload="auto">
+    <source src="https://files.catbox.moe/lc93mi.mp3" type="audio/mp3">
+  </audio>
 
   <div class="quiz-card">
     
     <!-- 1. หน้าแรก (Start Screen) -->
     <div id="start-screen">
-      <!-- รูปปกหน้าแรก -->
       <img src="https://i.postimg.cc/xd9HZk42/ae077464-527b-46e1-b550-56e94ad88fb1.jpg" alt="Cover" class="scene-img">
-      
-      <h1>เลือกคำตอบที่ตรงกับใจเพื่อออกค้นหาตัวตนของตัวเอง</h1>
-      
-      <button id="start-btn" class="main-btn">START</button>
+      <h1 id="start-title">เลือกคำตอบที่ตรงกับใจเพื่อค้นหาตัวตนของคุณ</h1>
+      <button id="start-btn" class="main-btn" onclick="startGame()">เริ่มเลย ➜</button>
     </div>
 
-    <!-- 2. หน้าดำเนินเรื่อง / เล่นเกม (Story Screen) -->
+    <!-- 2. หน้าดำเนินเรื่อง (Story Screen) -->
     <div id="story-screen" class="hidden">
       <img id="scene-img" class="scene-img" alt="Scene Image">
       <p id="story-text" class="story-text"></p>
