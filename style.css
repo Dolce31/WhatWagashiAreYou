@@ -198,3 +198,22 @@ body.lang-ja .result-desc {
   font-size: 13.5px;
   line-height: 1.8;
 }
+/* คอนเทนเนอร์แถบ Progress Bar */
+.progress-container {
+  width: 100%;
+  max-width: 380px;
+  height: 8px;
+  background-color: #E2DBD0;
+  border-radius: 10px;
+  margin: 0 auto 16px auto;
+  overflow: hidden;
+}
+
+/* แถบสีที่วิ่งตามความคืบหน้า */
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #4D3F22;
+  border-radius: 10px;
+  transition: width 0.35s ease-in-out;
+}
