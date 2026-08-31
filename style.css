@@ -3,8 +3,7 @@
 }
 
 body {
-  /* ใช้ฟอนต์ Itim สำหรับไทย และ M PLUS Rounded 1c สำหรับญี่ปุ่น */
-  font-family: 'Itim', 'M PLUS Rounded 1c', cursive, sans-serif;
+  font-family: 'Itim', 'Potta One', cursive, sans-serif;
   background-color: #F3F0E5;
   display: flex;
   justify-content: center;
@@ -12,6 +11,36 @@ body {
   min-height: 100vh;
   margin: 0;
   padding: 20px;
+}
+
+/* ปุ่มเลือกภาษา TH / JP มุมบนซ้าย */
+.lang-switch {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  display: flex;
+  gap: 6px;
+  z-index: 999;
+}
+
+.lang-btn {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #d4c5b9;
+  border-radius: 15px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #4D3F22;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.lang-btn.active {
+  background: #4D3F22;
+  color: #FFFFFF;
+  border-color: #4D3F22;
 }
 
 /* ปุ่มควบคุมเพลงมุมบนขวา */
@@ -34,8 +63,8 @@ body {
   transition: transform 0.1s ease;
 }
 
-.music-btn:active {
-  transform: scale(0.9);
+.music-btn:active, .lang-btn:active {
+  transform: scale(0.92);
 }
 
 .quiz-card {
@@ -59,11 +88,11 @@ body {
 
 /* ข้อความหน้าแรก */
 h1 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: normal;
   line-height: 1.6;
   margin: 16px auto 24px auto;
-  max-width: 320px;
+  max-width: 340px;
   color: #4D3F22;
 }
 
@@ -73,7 +102,7 @@ h1 {
   line-height: 1.7;
   color: #4D3F22;
   margin: 18px 0 24px 0;
-  white-space: pre-line; /* เว้นวรรคและขึ้นบรรทัดใหม่ตามที่พิมพ์ใน JS */
+  white-space: pre-line;
 }
 
 /* กล่องรวมปุ่มช้อยส์ */
@@ -94,7 +123,7 @@ h1 {
   color: #FFFFFF;
   border: none;
   border-radius: 25px;
-  padding: 12px 24px;
+  padding: 12px 28px;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
@@ -124,12 +153,12 @@ h1 {
   white-space: pre-line;
 }
 
-/* สำหรับซ่อนหน้าที่ไม่ได้ใช้งาน */
+/* ซ่อนหน้าที่ไม่ได้ใช้งาน */
 .hidden {
   display: none !important;
 }
 
-/* แอนิเมชันเฟดนุ่มๆ สไตล์ Visual Novel */
+/* แอนิเมชันเฟด */
 .fade-in {
   animation: smoothFadeIn 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
