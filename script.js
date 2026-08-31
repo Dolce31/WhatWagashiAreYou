@@ -1,3 +1,19 @@
+let currentLang = 'th'; // ค่าเริ่มต้นเป็นไทย
+
+// ข้อมูลข้อความ UI ที่จะเปลี่ยนตามภาษา
+const uiText = {
+  th: {
+    startTitle: "เลือกคำตอบที่ตรงกับใจเพื่อค้นหาตัวตนของคุณ",
+    startBtn: "เริ่มเลย ➜",
+    restartBtn: "เล่นใหม่อีกครั้ง ↺"
+  },
+  ja: {
+    startTitle: "直感で答えて、あなたの和菓子タイプを見つけよう",
+    startBtn: "はじめる ➜",
+    restartBtn: "もう一度あそぶ ↺"
+  }
+};
+
 // 1. แต้มสะสม
 let scores = {
   typeA: 0,
@@ -6,51 +22,80 @@ let scores = {
 
 let currentSceneIndex = 0;
 
-// 2. ข้อมูลฉากเนื้อเรื่อง 
+// 2. ข้อมูลฉากเนื้อเรื่อง (2 ภาษา)
 const storyScenes = [
-  // ฉากที่ 1: หน้าเกริ่นนำ (ไม่มีรูป ไม่คิดคะแนน)
   {
     image: "", 
-    text: "ปล่อยใจให้สบาย ออกผจญภัยเบาๆ\nค่อยๆ ซึมซับเรื่องราวที่จะสะท้อนตัวคุณ",
+    text: {
+      th: "ปล่อยใจให้สบาย ออกผจญภัยเบาๆ\nค่อยๆ ซึมซับเรื่องราวที่จะสะท้อนตัวคุณ",
+      ja: "心を落ち着かせて、小さな旅へ出かけましょう。\n物語があなたの心を映し出します。"
+    },
     choices: [
-      { text: "ถัดไป ➜", type: null }
+      { text: { th: "ถัดไป ➜", ja: "次へ ➜" }, type: null }
     ]
   },
-  // ฉากที่ 2: มีตัวเลือกสะสมคะแนน
   {
     image: "https://placehold.co/400x250/png?text=Scene+1",
-    text: "เจอทางแยกเล็กๆ กลางป่า",
+    text: {
+      th: "เจอทางแยกเล็กๆ กลางป่า",
+      ja: "森の中で小さな分かれ道を見つけました。"
+    },
     choices: [
-      { text: "เดินเลียบแม่น้ำ", type: "typeA" },
-      { text: "เดินไปทางทุ่งดอกไม้", type: "typeB" }
+      { text: { th: "เดินเลียบแม่น้ำ", ja: "川沿いを歩く" }, type: "typeA" },
+      { text: { th: "เดินไปทางทุ่งดอกไม้", ja: "お花畑の方へ進む" }, type: "typeB" }
     ]
   },
-  // ฉากที่ 3: มีตัวเลือกสะสมคะแนน
   {
-    image: "https://placehold.co/400x250/png?text=Scene+1",
-    text: "เมื่อเดินตามทางมาคุณได้พบกับสถานที่แห่งนึง คุณคิดว่าสถานที่นั้นคือ",
+    image: "https://placehold.co/400x250/png?text=Scene+2",
+    text: {
+      th: "เมื่อเดินตามทางมาคุณได้พบกับสถานที่แห่งหนึ่ง คุณคิดว่าสถานที่นั้นคือ",
+      ja: "道を歩いていると、ある場所にたどり着きました。そこはどんな場所？"
+    },
     choices: [
-      { text: "กระท่อมอบอุ่น", type: "typeA" },
-      { text: "ทะเลกว้างใหญ่", type: "typeB" }
+      { text: { th: "กระท่อมอบอุ่น", ja: "あたたかい小屋" }, type: "typeA" },
+      { text: { th: "ทะเลกว้างใหญ่", ja: "広大な海" }, type: "typeB" }
     ]
   }
 ];
 
-// 3. สรุปผลลัพธ์ (ตอนจบ)
+// 3. ผลลัพธ์ตอนจบ (2 ภาษา)
 const results = {
   typeA: {
-    title: "A",
-    desc: "รักความสงบ สบายๆ",
-    image: "https://placehold.co/400x250/png?text=Result+A"
+    title: { th: "A", ja: "A " },
+    desc: { th: "รักความสงบ อบอุ่น สบายใจเมื่อได้อยู่คนเดียว", ja: "優しくて温かい、穏やかな心の持ち主。" },
+    image: "https://placehold.co/400x250/png?text=Daifuku"
   },
   typeB: {
-    title: "B",
-    desc: "ร่าเริงสดใส",
-    image: "https://placehold.co/400x250/png?text=Result+B"
+    title: { th: "B", ja: "B " },
+    desc: { th: "ร่าเริงสดใส เข้ากับทุกคนได้ง่าย เต็มไปด้วยพลังบวก", ja: "明るく元気で、誰とでもすぐに仲良くなれる人気者。" },
+    image: "https://placehold.co/400x250/png?text=Dango"
   }
 };
 
-// 4. ระบบจัดการเสียง BGM
+// 4. สลับภาษา (ปุ่มมุมบนซ้าย)
+function changeLanguage(lang) {
+  currentLang = lang;
+  
+  // สลับสถานะปุ่ม Active
+  document.getElementById("lang-btn-th").classList.toggle("active", lang === 'th');
+  document.getElementById("lang-btn-ja").classList.toggle("active", lang === 'ja');
+  
+  // เปลี่ยนข้อความหน้าแรก, ปุ่มเริ่มเกม และปุ่มรีสตาร์ท
+  document.getElementById("start-title").innerText = uiText[lang].startTitle;
+  document.getElementById("start-btn").innerText = uiText[lang].startBtn;
+  document.getElementById("restart-btn").innerText = uiText[lang].restartBtn;
+
+  // อัปเดตภาษาทันทีถ้ากำลังอยู่ในหน้าเล่นเกม
+  if (!document.getElementById("story-screen").classList.contains("hidden")) {
+    showScene();
+  }
+  // อัปเดตภาษาทันทีถ้าอยู่ในหน้าสรุปผล
+  if (!document.getElementById("result-screen").classList.contains("hidden")) {
+    showFinalResult();
+  }
+}
+
+// 5. ระบบเสียง BGM
 const bgm = document.getElementById("bgm");
 const musicBtn = document.getElementById("music-toggle-btn");
 
@@ -58,7 +103,6 @@ if (bgm) {
   bgm.volume = 0.15;
 }
 
-// ฟังก์ชันเปิด/ปิดเสียง (สลับแค่ 2 จังหวะ: เปิด ♫ / ปิด ✕)
 function toggleMusic() {
   if (!bgm || !musicBtn) return;
 
@@ -81,7 +125,6 @@ if (musicBtn) {
   musicBtn.addEventListener("click", toggleMusic);
 }
 
-// ดักจับการแตะหน้าจอครั้งแรก
 function startAudioOnFirstInteraction() {
   if (bgm && bgm.paused) {
     bgm.volume = 0.15;
@@ -97,22 +140,20 @@ function startAudioOnFirstInteraction() {
 
 document.addEventListener("click", startAudioOnFirstInteraction, { once: true });
 
-// ปุ่ม START
-document.getElementById("start-btn").addEventListener("click", () => {
+// 6. เริ่มเกม
+function startGame() {
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("story-screen").classList.remove("hidden");
   showScene();
-  
   startAudioOnFirstInteraction();
-});
+}
 
-// 6. แสดงฉากปัจจุบัน (เพิ่มคำสั่งแอนิเมชัน Fade-in)
+// 7. แสดงฉากตามภาษาที่เลือกไว้
 function showScene() {
   const current = storyScenes[currentSceneIndex];
   const storyScreen = document.getElementById("story-screen");
   const imgEl = document.getElementById("scene-img");
 
-  // รีเซ็ตแอนิเมชันให้เล่นใหม่ทุกครั้งที่กดเปลี่ยนฉาก
   storyScreen.classList.remove("fade-in");
   void storyScreen.offsetWidth; 
   storyScreen.classList.add("fade-in");
@@ -125,20 +166,20 @@ function showScene() {
     imgEl.style.display = "none";
   }
 
-  document.getElementById("story-text").innerText = current.text;
+  document.getElementById("story-text").innerText = current.text[currentLang];
 
   const container = document.getElementById("choice-buttons");
   container.innerHTML = "";
 
   current.choices.forEach(choice => {
     const btn = document.createElement("button");
-    btn.innerText = choice.text;
+    btn.innerText = choice.text[currentLang];
     btn.onclick = () => selectChoice(choice.type);
     container.appendChild(btn);
   });
 }
 
-// 7. เมื่อผู้เล่นกดตัวเลือก
+// 8. เมื่อเลือกคำตอบ
 function selectChoice(type) {
   if (type) {
     scores[type] = (scores[type] || 0) + 1;
@@ -153,7 +194,7 @@ function selectChoice(type) {
   }
 }
 
-// 8. ประมวลผลและแสดงผลลัพธ์ (เพิ่มแอนิเมชัน Fade-in)
+// 9. แสดงผลลัพธ์
 function showFinalResult() {
   const finalType = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
   const resultData = results[finalType] || results["typeA"];
@@ -166,18 +207,16 @@ function showFinalResult() {
   void resultScreen.offsetWidth;
   resultScreen.classList.add("fade-in");
 
-  document.getElementById("result-title").innerText = resultData.title;
-  document.getElementById("result-desc").innerText = resultData.desc;
+  document.getElementById("result-title").innerText = resultData.title[currentLang];
+  document.getElementById("result-desc").innerText = resultData.desc[currentLang];
   document.getElementById("result-img").src = resultData.image;
 }
 
-// 9. รีสตาร์ทเกม
+// 10. รีสตาร์ทเกม
 function restartGame() {
-  // รีเซ็ตคะแนนและลำดับฉาก
   scores = { typeA: 0, typeB: 0 };
   currentSceneIndex = 0;
   
-  // สลับหน้าจอ
   document.getElementById("result-screen").classList.add("hidden");
   document.getElementById("story-screen").classList.add("hidden");
   
@@ -186,10 +225,4 @@ function restartGame() {
   startScreen.classList.remove("fade-in");
   void startScreen.offsetWidth;
   startScreen.classList.add("fade-in");
-}
-
-// ผูกปุ่ม Restart ป้องกันปัญหา HTML เรียกฟังก์ชันไม่เจอ
-const restartBtn = document.getElementById("restart-btn");
-if (restartBtn) {
-  restartBtn.addEventListener("click", restartGame);
 }
